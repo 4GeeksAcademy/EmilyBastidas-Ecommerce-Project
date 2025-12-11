@@ -12,7 +12,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(512), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = db.Column(
+        db.DateTime, default=lambda: datetime.now(timezone.utc))
     name = db.Column(db.String(120))
     last_name = db.Column(db.String(120))
     address = db.Column(db.String(255))
@@ -31,6 +32,9 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "username": self.username,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
             "email": self.email,
             "is_admin": self.is_admin,
             "name": self.name,
@@ -38,10 +42,10 @@ class User(db.Model):
             "address": self.address,
             "is_active": self.is_active
         }
-    
+
 
 class Category(db.Model):
-    __tablename__="categories"
+    __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     # Relacion con productos
@@ -53,6 +57,7 @@ class Category(db.Model):
             "name": self.name
         }
 
+
 class Product(db.Model):
     __tablename__ = "products"
     id = db.Column(db.Integer, primary_key=True)
@@ -60,19 +65,20 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=True)
     base_price = db.Column(Numeric(10, 2), nullable=False)
     image_url = db.Column(db.String(500), nullable=True)
-    #stock = db.Column(db.Integer, default=0)
+    # stock = db.Column(db.Integer, default=0)
 
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
 
     # Relación con Variant: Un producto tiene muchas variantes
-    variants = db.relationship('Variant', backref='product', lazy=True, cascade="all, delete-orphan")
+    variants = db.relationship(
+        'Variant', backref='product', lazy=True, cascade="all, delete-orphan")
 
     @property
     def total_stock(self):
         """Calcula y devuelve la suma del stock de todas sus variantes"""
         # Me aseguro de cargar variantes lazy=true
         return sum(v.stock for v in self.variants)
-    
+
     def serialize(self, include_variants=False):
         data = {
             "id": self.id,
@@ -87,19 +93,21 @@ class Product(db.Model):
             data["variants"] = [v.serialize() for v in self.variants]
         return data
 
+
 class Variant(db.Model):
     __tablename__ = "variants"
     id = db.Column(db.Integer, primary_key=True)
-    size = db.Column(db.String(10), nullable=False) # S, M, L, XL
-    color = db.Column(db.String(50), nullable=False) # Blanco, Negro, Azul
-    stock = db.Column(db.Integer, default=0) # Stock real
+    size = db.Column(db.String(10), nullable=False)  # S, M, L, XL
+    color = db.Column(db.String(50), nullable=False)  # Blanco, Negro, Azul
+    stock = db.Column(db.Integer, default=0)  # Stock real
 
     # FK: Apunta al Producto padre
-    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
-    
+    product_id = db.Column(db.Integer, db.ForeignKey(
+        "products.id"), nullable=False)
 
     # La clave compuesta asegura que no haya dos veces la misma talla y color para el mismo producto
-    __table_args__ = (db.UniqueConstraint('product_id', 'size', 'color', name='_product_size_color_uc'),)
+    __table_args__ = (db.UniqueConstraint('product_id', 'size',
+                      'color', name='_product_size_color_uc'),)
 
     def serialize(self):
         return {
@@ -110,12 +118,15 @@ class Variant(db.Model):
             "stock": self.stock
         }
 
+
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key=True)
     total_amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(50), default="Pending") # Pending, Shipped, Delivered
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    # Pending, Shipped, Delivered
+    status = db.Column(db.String(50), default="Pending")
+    created_at = db.Column(
+        db.DateTime, default=lambda: datetime.now(timezone.utc))
     # Campos de envío para el checkout (Frame: Checkout)
     shipping_address = db.Column(db.String(255))
     city = db.Column(db.String(100))
@@ -123,11 +134,11 @@ class Order(db.Model):
     zip_code = db.Column(db.String(20))
 
     # Relación con OrderItem: Una orden tiene muchos ítems
-    items = db.relationship('OrderItem', backref='order', lazy=True, cascade="all, delete-orphan")
+    items = db.relationship('OrderItem', backref='order',
+                            lazy=True, cascade="all, delete-orphan")
 
     # FK
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
 
     def serialize(self):
         return {
@@ -140,16 +151,20 @@ class Order(db.Model):
             "items": [item.serialize() for item in self.items]
         }
 
+
 class OrderItem(db.Model):
     __tablename__ = "order_items"
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
-    variant_id = db.Column(db.Integer, db.ForeignKey('variants.id'), nullable=False) # Referencia a la Variante específica
+    order_id = db.Column(db.Integer, db.ForeignKey(
+        'orders.id'), nullable=False)
+    variant_id = db.Column(db.Integer, db.ForeignKey(
+        'variants.id'), nullable=False)  # Referencia a la Variante específica
     quantity = db.Column(db.Integer, nullable=False)
-    price_at_purchase = db.Column(db.Float, nullable=False) # Precio al momento de la compra
+    # Precio al momento de la compra
+    price_at_purchase = db.Column(db.Float, nullable=False)
 
-    #product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
-    #product = db.relationship("Product", lazy=True)
+    # product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
+    # product = db.relationship("Product", lazy=True)
 
     # Relación: cada OrderItem apunta a una Variant
     variant = db.relationship('Variant')
@@ -164,14 +179,16 @@ class OrderItem(db.Model):
             "size": self.variant.size if self.variant else None,
             "color": self.variant.color if self.variant else None,
         }
-    
+
+
 class Cart(db.Model):
     __tablename__ = "carts"
     id = db.Column(db.Integer, primary_key=True)
 
     # 1 usuario con 1 carrito
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    items = db.relationship("CartItem", backref="cart", lazy=True, cascade="all, delete")
+    items = db.relationship("CartItem", backref="cart",
+                            lazy=True, cascade="all, delete")
 
     def serialize(self):
         return {
@@ -179,7 +196,8 @@ class Cart(db.Model):
             "user_id": self.user_id,
             "items": [item.serialize() for item in self.items]
         }
-    
+
+
 class CartItem(db.Model):
     __tablename__ = "cart_items"
     id = db.Column(db.Integer, primary_key=True)
