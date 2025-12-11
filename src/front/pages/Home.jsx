@@ -1,52 +1,73 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// src/pages/Home.jsx
+import React, { useState } from "react";
+import { Card } from "../components/Card.jsx";
 
 export const Home = () => {
+  const womenProducts = [
+    {
+      id: 1,
+      name: "Vestido elegante",
+      price: "€89.99",
+      image: "https://via.placeholder.com/600x400?text=Vestido",
+    },
+  ];
 
-	const { store, dispatch } = useGlobalReducer()
+  const menProducts = [
+    {
+      id: 2,
+      name: "Traje clásico",
+      price: "€249.99",
+      image: "https://via.placeholder.com/600x400?text=Traje",
+    },
+  ];
 
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
+  const [favorites, setFavorites] = useState([]);
 
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
+  const toggleFavorite = (productId) => {
+    setFavorites((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
+  };
 
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
+  return (
+    <div className="container my-5">
+      <section className="mb-5">
+        <h2 className="fw-semibold mb-4">Mujer</h2>
+        <div className="row g-4">
+          {womenProducts.map((product) => (
+            <div key={product.id} className="col-12 col-md-4">
+              <Card
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.image}
+                isFavorite={favorites.includes(product.id)}
+                onToggleFavorite={() => toggleFavorite(product.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
 
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-	useEffect(() => {
-		loadMessage()
-	}, [])
-
-	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
-		</div>
-	);
-}; 
+      <section className="mb-5">
+        <h2 className="fw-semibold mb-4">Hombre</h2>
+        <div className="row g-4">
+          {menProducts.map((product) => (
+            <div key={product.id} className="col-12 col-md-4">
+              <Card
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.image}
+                isFavorite={favorites.includes(product.id)}
+                onToggleFavorite={() => toggleFavorite(product.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+};
