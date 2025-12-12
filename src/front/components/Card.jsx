@@ -1,8 +1,12 @@
-// src/components/Card.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { useFavorites } from "./FavoritesContext.jsx";
 
-export const Card = ({ id, name, price, image, isFavorite, onToggleFavorite }) => {
+export const Card = ({ id, name, price, image }) => {
+  const { favorites, toggleFavorite } = useFavorites();
+
+  const isFavorite = favorites.includes(id);
+
   return (
     <div className="card border-0" style={{ maxWidth: "320px" }}>
       <Link
@@ -17,7 +21,7 @@ export const Card = ({ id, name, price, image, isFavorite, onToggleFavorite }) =
           }}
         >
           <img
-            src={ "https://picsum.photos/600/400"}
+            src={"https://picsum.photos/600/400"}
             alt={name}
             style={{
               width: "100%",
@@ -27,28 +31,34 @@ export const Card = ({ id, name, price, image, isFavorite, onToggleFavorite }) =
             }}
           />
 
-         
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();    
               e.stopPropagation();   
-              if (onToggleFavorite) onToggleFavorite();
+              toggleFavorite(id);
             }}
-            className="border-0 bg-transparent p-0"
+            className="border-0 p-0"
             style={{
               position: "absolute",
               top: "0.5rem",
               right: "0.5rem",
-              fontSize: "1.2rem",
+              width: "32px",
+              height: "32px",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.6)", 
             }}
           >
             <i
               className={
                 isFavorite
-                  ? "fa-solid fa-heart text-danger"
-                  : "fa-regular fa-heart text-white"
+                  ? "fa-solid fa-heart text-danger"  
+                  : "fa-regular fa-heart text-white" 
               }
+              style={{ fontSize: "1rem" }}
             ></i>
           </button>
         </div>

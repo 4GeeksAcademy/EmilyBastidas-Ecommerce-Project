@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect } from "react";
 import { Card } from "../components/Card.jsx";
 import { Carousel } from "../components/Carousel";
