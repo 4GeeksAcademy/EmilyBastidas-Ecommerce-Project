@@ -185,6 +185,7 @@ def checkout():
             city=city,
             region=region,
             zip_code=zip_code,
+            total_amount=0
         )
         
         
