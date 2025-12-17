@@ -44,8 +44,20 @@ export const Home = () => {
     await addToCart(dispatch, store.auth.accessToken, variantId, quantity);
   };
 
-  const womenProducts = products.filter((p) => p.category === "Ropa Mujer");
-  const menProducts = products.filter((p) => p.category === "Ropa Hombre");
+  //  Función para obtener un producto por cada subcategoría
+  const getOnePerSubcategory = (categoryName) => {
+    const filtered = products.filter((p) => p.category === categoryName);
+    const grouped = {};
+    filtered.forEach((p) => {
+      if (!grouped[p.subcategory]) {
+        grouped[p.subcategory] = p; // toma el primero que encuentre de cada subcategoría
+      }
+    });
+    return Object.values(grouped);
+  };
+
+  const womenProducts = getOnePerSubcategory("Ropa Mujer");
+  const menProducts = getOnePerSubcategory("Ropa Hombre");
 
   return (
     <>
