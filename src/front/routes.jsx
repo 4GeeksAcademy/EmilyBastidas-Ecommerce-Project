@@ -1,3 +1,4 @@
+import React from "react"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -22,6 +23,7 @@ import { Signup } from "./pages/Signup";
 import { Profile } from "./pages/Profile";
 import { Carrito } from "./pages/Carrito";
 import { Checkout } from "./pages/Checkout";
+
 import { Comprar } from "./pages/Comprar";
 import { Blusas } from "./pages/Blusas";
 import { Faldas } from "./pages/Faldas";
@@ -41,12 +43,9 @@ export const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="demo" element={<Demo />} />
 
-
       <Route path="products" element={<ProductsList />} />
       <Route path="product/:id" element={<ProductDetails />} />
       <Route path="single/:theId" element={<Single />} />
-
-
       <Route path="favorites" element={<Favorites />} />
 
       <Route path="mujer">
@@ -66,12 +65,7 @@ export const router = createBrowserRouter(
       <Route path="checkout" element={<Checkout />} />
       <Route path="comprar" element={<Comprar />} />
 
-
-      <Route path="single/:theId" element={<Single />} />
-      <Route path="demo" element={<Demo />} />
       <Route path="favorites" element={<Favorites />} />
-      <Route path="product/:id" element={<ProductDetails />} />
-      <Route path="products" element={<ProductsList />} />
       <Route path="admin" element={<Admin />}>
         <Route path="variants" element={<Variants />} />
         <Route path="orders" element={<Orders />} />
