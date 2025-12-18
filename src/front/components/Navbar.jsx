@@ -14,6 +14,7 @@ export const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { store, dispatch } = useGlobalReducer();
 
+
   useEffect(() => {
     if (store.auth.accessToken && store.cart.items.length === 0) {
       getCart(dispatch, store.auth.accessToken);
@@ -150,6 +151,15 @@ export const Navbar = () => {
                 </span>
               )}
             </li>
+            {/* Link Admin solo visible para usuarios con rol admin */}
+
+            {store.auth?.isLoggedIn && store.auth?.user?.is_admin && (
+              <li className="nav-item me-3">
+                <Link to="/admin" className="nav-link">
+                  Admin
+                </Link>
+              </li>
+            )}
 
             {/* Login / Logout con icono de salir */}
             <li className="nav-item ms-auto d-flex align-items-center">

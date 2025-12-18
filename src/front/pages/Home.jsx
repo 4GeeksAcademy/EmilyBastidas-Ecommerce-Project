@@ -3,11 +3,11 @@ import { Card } from "../components/Card.jsx";
 import { Carousel } from "../components/Carousel";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { addToCart } from "../actions";
-import { useFavorites } from "../components/FavoritesContext.jsx"; 
+import { useFavorites } from "../components/FavoritesContext.jsx";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
-  const { favorites, toggleFavorite } = useFavorites(); 
+  const { favorites, toggleFavorite } = useFavorites();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -45,8 +45,20 @@ export const Home = () => {
     await addToCart(dispatch, store.auth.accessToken, variantId, quantity);
   };
 
-  const womenProducts = products.filter((p) => p.category === "Ropa Mujer");
-  const menProducts = products.filter((p) => p.category === "Ropa Hombre");
+  //  Función para obtener un producto por cada subcategoría
+  const getOnePerSubcategory = (categoryName) => {
+    const filtered = products.filter((p) => p.category === categoryName);
+    const grouped = {};
+    filtered.forEach((p) => {
+      if (!grouped[p.subcategory]) {
+        grouped[p.subcategory] = p; // toma el primero que encuentre de cada subcategoría
+      }
+    });
+    return Object.values(grouped);
+  };
+
+  const womenProducts = getOnePerSubcategory("Ropa Mujer");
+  const menProducts = getOnePerSubcategory("Ropa Hombre");
 
   return (
     <>
@@ -63,11 +75,11 @@ export const Home = () => {
                   variantId={product.variants?.[0]?.id}
                   name={product.name}
                   price={`€${product.base_price}`}
-                  image={product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null}
-                  isFavorite={favorites.includes(product.id)}  
-                  onToggleFavorite={() => toggleFavorite(product.id)} 
+                  image={product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null} //cambio para ver imagen
+                  isFavorite={favorites.includes(product.id)}
+                  onToggleFavorite={() => toggleFavorite(product.id)}
                   onAddToCart={(quantity) => handleAddToCart(product, quantity)}
-                  disabled={!store.auth.isLoggedIn}
+                  disabled={!store.auth.isLoggedIn} git
                 />
               </div>
             ))}
@@ -84,9 +96,9 @@ export const Home = () => {
                   variantId={product.variants?.[0]?.id}
                   name={product.name}
                   price={`€${product.base_price}`}
-                  image={product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null}
-                  isFavorite={favorites.includes(product.id)}   
-                  onToggleFavorite={() => toggleFavorite(product.id)} 
+                  image={product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null} //cambio para ver imagen
+                  isFavorite={favorites.includes(product.id)}
+                  onToggleFavorite={() => toggleFavorite(product.id)}
                   onAddToCart={(quantity) => handleAddToCart(product, quantity)}
                   disabled={!store.auth.isLoggedIn}
                 />
