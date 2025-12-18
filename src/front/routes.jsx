@@ -31,6 +31,7 @@ import { Zapatos } from "./pages/Zapatos";
 import { Camisas } from "./pages/Camisas";
 import { Pantalones } from "./pages/Pantalones";
 import { ZapatosHombre } from "./pages/ZapatosHombre";
+import { SearchResults } from "./pages/SearchResults";
 
 
 const logged = true;
@@ -85,6 +86,7 @@ export const router = createBrowserRouter(
           </AdminRoute>
         }
       />
+      <Route path="/search-results" element={<SearchResults />} />
 
 
       <Route path="login" element={<Login />} />

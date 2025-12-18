@@ -27,20 +27,29 @@ export const Navbar = () => {
     navigate("/login");
   };
 
-  const handleSearch = () => {
-    const allProducts = [
-      { id: 1, name: "Vestido elegante" },
-      { id: 2, name: "Traje clásico" }
-    ];
-    const found = allProducts.find(
-      (p) => p.name.toLowerCase() === searchTerm.toLowerCase()
-    );
-    if (found) {
-      navigate(`/product/${found.id}`);
-    } else {
-      alert("Producto no encontrado");
+  const handleSearch = async () => {
+  if (searchTerm.trim() === "") return;
+
+  try {
+    // Usamos el endpoint que me mostraste
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/search?q=${searchTerm}`);
+    
+    if (response.status === 404) {
+      alert("No se encontraron productos.");
+      return;
     }
-  };
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Navegamos a una página de resultados pasando los datos
+      navigate("/search-results", { state: { results: data, term: searchTerm } });
+      setSearchTerm(""); // Limpiamos el buscador
+    }
+  } catch (error) {
+    console.error("Error buscando productos:", error);
+  }
+};
 
   const totalItems = store.cart.count;
 
