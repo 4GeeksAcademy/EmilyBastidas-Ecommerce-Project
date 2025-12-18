@@ -4,7 +4,7 @@ import { useState } from "react";
 import ScrollToTop from "../components/ScrollToTop";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
-import { DemoNav } from "../components/DemoNav";
+// import { DemoNav } from "../components/DemoNav";
 
 export const Layout = () => {
   const location = useLocation();
@@ -29,7 +29,7 @@ export const Layout = () => {
         </main>
 
         {!isAdmin && <Footer />}
-        {!isAdmin && <DemoNav />}
+        {/*!isAdmin && <DemoNav />*/}
       </div>
     </ScrollToTop>
   );
