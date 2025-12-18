@@ -14,6 +14,7 @@ import { Favorites } from "./pages/Favorites";
 import { ProductDetails } from "./components/ProductDetails";
 import { ProductsList } from "./pages/ProductsList";
 import { Admin } from "./pages/Admin";
+import { AdminRoute } from "./pages/AdminRoute";
 import { Variants } from "./pages/Variants";
 import { Orders } from "./pages/Orders";
 import { Users } from "./pages/Users";
@@ -32,6 +33,7 @@ import { Zapatos } from "./pages/Zapatos";
 import { Camisas } from "./pages/Camisas";
 import { Pantalones } from "./pages/Pantalones";
 import { ZapatosHombre } from "./pages/ZapatosHombre";
+import { SearchResults } from "./pages/SearchResults";
 
 
 const logged = true;
@@ -71,6 +73,14 @@ export const router = createBrowserRouter(
         <Route path="orders" element={<Orders />} />
         <Route path="users" element={<Users />} />
       </Route>
+      <Route path="/admin/*"
+        element={
+          <AdminRoute>
+            <Admin />
+          </AdminRoute>
+        }
+      />
+      <Route path="/search-results" element={<SearchResults />} />
 
 
       <Route path="login" element={<Login />} />

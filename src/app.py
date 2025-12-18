@@ -39,6 +39,7 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -51,9 +52,10 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JWT_SECRET_KEY"] = "my_secret_key"
 
-db.init_app(app)
+
 MIGRATE = Migrate(app, db, compare_type=True)
 
+db.init_app(app)
 # JWT
 jwt = JWTManager(app)
 
