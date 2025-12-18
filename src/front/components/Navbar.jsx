@@ -7,6 +7,7 @@ import { useFavorites } from "./FavoritesContext.jsx";
 import { useState, useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { getCart } from "../actions";
+import trendifyLogo from "../assets/img/Logo.png";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -47,7 +48,13 @@ export const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
 
-        <Link className="navbar-brand ms-5" to="/">LOGO</Link>
+        <Link className="navbar-brand ms-5" to="/">
+          <img 
+            src={trendifyLogo}
+            alt="Trendify"
+            style={{ height: "60px", objectFit: "contain", verticalAlign: "middle"}}
+          />
+        </Link>
 
         <button
           className="navbar-toggler"
@@ -93,26 +100,6 @@ export const Navbar = () => {
 
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
 
-            {/* Favoritos */}
-            <li className="nav-item me-3">
-              <Link to="/favorites" className="nav-link p-0">
-                <div
-                  className="position-relative d-flex align-items-center justify-content-center rounded-circle border border-secondary"
-                  style={{ width: "40px", height: "40px" }}
-                >
-                  <FaRegHeart className="text-secondary fs-5" />
-                  {favorites.length > 0 && (
-                    <span
-                      className="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger"
-                      style={{ fontSize: "0.6rem" }}
-                    >
-                      {favorites.length}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </li>
-
             {/* Dropdown Mujer */}
             <li className="nav-item dropdown me-2">
               <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -137,19 +124,44 @@ export const Navbar = () => {
               </ul>
             </li>
 
-            {/* Carrito con globito */}
-            <li className="nav-item position-relative me-3">
-              <Link className="nav-link" to="/carrito">
-                <LuShoppingCart className="icono-carrito" style={{ fontSize: "20px" }} />
-              </Link>
-              {totalItems > 0 && (
-                <span
-                  className="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-2"
-                  style={{ width: "20px", height: "15px", fontSize: "10px", padding: "0" }}
+            {/* Favoritos */}
+            <li className="nav-item me-3">
+              <Link to="/favorites" className="nav-link p-0">
+                <div
+                  className="position-relative d-flex align-items-center justify-content-center"
+                  style={{ width: "40px", height: "40px" }}
                 >
-                  {totalItems}
-                </span>
-              )}
+                  <FaRegHeart className="text-secondary fs-5" />
+                  {favorites.length > 0 && (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      style={{ fontSize: "0.6rem", marginTop: "8px", marginLeft: "-4px" }}
+                    >
+                      {favorites.length}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            </li>
+
+            {/* Carrito con globito */}
+            <li className="nav-item me-3">
+              <Link to="/carrito" className="nav-link p-0">
+                <div
+                  className="position-relative d-flex align-items-center justify-content-center"
+                  style={{ width: "40px", height: "40px" }}
+                >
+                  <LuShoppingCart className="text-secondary fs-5" />
+                  {totalItems > 0 && (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                      style={{ fontSize: "0.6rem", marginTop: "8px", marginLeft: "-4px" }}
+                    >
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
+              </Link>
             </li>
             {/* Link Admin solo visible para usuarios con rol admin */}
 

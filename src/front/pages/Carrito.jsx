@@ -49,7 +49,7 @@ export const Carrito = () => {
 
   return (
     <div className="container my-5">
-      <p className="mb-4">Carrito de Compras</p>
+      <h3 className="mb-4">Carrito de Compras</h3>
       <div className="row">
         <div className="col-12 col-lg-8">
           {items.length === 0 ? (
@@ -65,7 +65,7 @@ export const Carrito = () => {
                 return (
                   <div key={item.id} className="p-3 bg-white rounded shadow-sm d-flex gap-3">
                     <img
-                      src={product.image_url || product.image || ""}
+                      src={(product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null) || product.image_url}
                       alt={product.name || "Producto"}
                       style={{ width: "120px", height: "140px", objectFit: "cover", borderRadius: "8px" }}
                     />
