@@ -18,9 +18,9 @@ export const Card = ({
   const handleDecrease = () => setQuantity(q => q > 1 ? q - 1 : 1);
   const handleIncrease = () => setQuantity(q => q + 1);
   return (
-    <div className="card border-0" style={{ maxWidth: "320px" }}>
+    <div className="card border-0" style={{ maxWidth: "320px", width: "100%" }}>
       <Link to={`/product/${id}`} className="text-decoration-none text-dark">
-        <div className="position-relative" style={{ height: "220px", overflow: "hidden" }}>
+        <div className="position-relative" style={{ height: "220px", overflow: "hidden", borderRadius: "12px" }}>
           <img
             src={image}
             alt={name}

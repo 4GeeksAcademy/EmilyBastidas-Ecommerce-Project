@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
+const formatCLP = (value) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(value);
+};
+
 export const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -96,7 +104,7 @@ export const SearchResults = () => {
                     />
                     <div className="card-body">
                       <p className="card-title mb-1 text-truncate">{product.name}</p>
-                      <p className="fw-bold">€{product.base_price}</p>
+                      <p className="fw-bold">{formatCLP(product.base_price)}</p>
                     </div>
                   </div>
                 </div>

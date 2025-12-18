@@ -2,12 +2,21 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Card } from "../components/Card.jsx";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { addToCart } from "../actions";
+import { useFavorites } from "../components/FavoritesContext.jsx";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
+const formatCLP = (value) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(value);
+};
 
 export const ProductsList = () => {
   const { store, dispatch } = useGlobalReducer();
+  const { favorites, toggleFavorite } = useFavorites();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -253,9 +262,12 @@ export const ProductsList = () => {
                 <Card
                   id={p.id}
                   name={p.name}
-                  price={`€${Number(p.base_price).toFixed(2)}`}
+                  price={formatCLP(p.base_price)}
                   image={getProductImage(p)}
                   onAddToCart={() => handleAddToCart(p)}
+                  isFavorite={favorites.includes(p.id)}
+                  onToggleFavorite={() => toggleFavorite(p.id)}
+                  disabled={!store.auth.isLoggedIn}
                 />
               </div>
             ))}

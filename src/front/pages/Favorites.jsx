@@ -4,6 +4,14 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { Card } from "../components/Card.jsx";
 import { Link } from "react-router-dom";
 
+const formatCLP = (value) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(value);
+};
+
 export function Favorites() {
   const { favorites, removeFavorite } = useFavorites();
   const { store } = useGlobalReducer();
@@ -51,8 +59,8 @@ export function Favorites() {
                 id={product.id}
                 variantId={product.variants?.[0]?.id}
                 name={product.name}
-                price={`€${product.base_price}`}
-                image={product.image_url}
+                price={formatCLP(product.base_price)}
+                image={product.gallery && product.gallery.length > 0 ? product.gallery[0].url : null} //cambio para ver imagen
                 isFavorite={true}
                 onToggleFavorite={() => removeFavorite(product.id)}
               />

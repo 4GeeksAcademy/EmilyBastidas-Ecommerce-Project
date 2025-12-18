@@ -4,6 +4,13 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 import { addToCart } from "../actions";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
+const formatCLP = (value) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(value);
+};
 
 export const ProductDetails = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -208,7 +215,7 @@ export const ProductDetails = () => {
         {/* Derecha: info */}
         <div className="col-12 col-lg-6">
           <h2 className="mb-2">{product.name}</h2>
-          <h3 className="fw-semibold mb-3">€{Number(product.base_price).toFixed(2)}</h3>
+          <h3 className="fw-semibold mb-3">{formatCLP(product.base_price)}</h3>
           <p className="text-secondary mb-4">{product.description}</p>
 
           {/* Tallas */}
