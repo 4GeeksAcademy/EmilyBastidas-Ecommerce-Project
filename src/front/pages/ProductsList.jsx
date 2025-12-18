@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Card } from "../components/Card.jsx";
+import { useSearchParams } from "react-router-dom"
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { addToCart } from "../actions";
 import { useFavorites } from "../components/FavoritesContext.jsx";
@@ -17,12 +18,12 @@ const formatCLP = (value) => {
 export const ProductsList = () => {
   const { store, dispatch } = useGlobalReducer();
   const { favorites, toggleFavorite } = useFavorites();
+  const [searchParams] = useSearchParams()
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
-  const [catWomen, setCatWomen] = useState(true);
-  const [catMen, setCatMen] = useState(true);
+  const [catWomen, setCatWomen] = useState(searchParams.get("category") === "Ropa Mujer" || !searchParams.get("category"));
+const [catMen, setCatMen] = useState(searchParams.get("category") === "Ropa Hombre" || !searchParams.get("category"));
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
@@ -35,13 +36,27 @@ export const ProductsList = () => {
     return null;
   }, [catWomen, catMen]);
 
-  const buildQueryString = () => {
-    const params = new URLSearchParams();
-    if (categoryQuery && categoryQuery !== "none") params.set("category", categoryQuery);
-    if (selectedSize) params.set("size", selectedSize);
-    if (selectedColor) params.set("color", selectedColor);
-    return params.toString();
-  };
+const buildQueryString = () => {
+  const params = new URLSearchParams();
+
+  // 1. Categoría (Ropa Mujer / Ropa Hombre)
+  if (catWomen && !catMen) params.set("category", "Ropa Mujer");
+  else if (!catWomen && catMen) params.set("category", "Ropa Hombre");
+
+  // 2. Subcategoría por ID (leído de la URL)
+  const urlSubId = searchParams.get("sub_id"); // Captura el número del link
+  if (urlSubId) {
+    params.set("subcategory_id", urlSubId); // Lo envía al backend
+  }
+
+  // 3. Tallas y Colores
+  if (selectedSize) params.set("size", selectedSize);
+  if (selectedColor) params.set("color", selectedColor);
+
+  return params.toString();
+};
+
+
 
   const loadProducts = async () => {
     setLoading(true);
@@ -71,9 +86,33 @@ export const ProductsList = () => {
   useEffect(() => {
     loadProducts();
 
-  }, [categoryQuery, selectedColor, selectedSize]);
+  }, [categoryQuery, selectedColor, selectedSize, searchParams]);
 
+useEffect(() => {
+  const urlCat = searchParams.get("category");
+  const urlSub = searchParams.get("sub");
 
+  if (urlCat === "mujer") {
+    setCatWomen(true);
+    setCatMen(false);
+  } else if (urlCat === "hombre") {
+    setCatMen(true);
+    setCatWomen(false);
+  } else if (!urlCat && !urlSub) {
+    // Si no hay nada en la URL (clic en "Todos"), marcamos ambos
+    setCatWomen(true);
+    setCatMen(true);
+  }
+}, [searchParams]);
+
+useEffect(() => {
+  const urlSubId = searchParams.get("sub_id");
+  if (urlSubId) {
+    // Al elegir una subcategoría nueva, quizás quieras resetear tallas
+    setSelectedSize(null);
+    setSelectedColor(null);
+  }
+}, [searchParams]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {

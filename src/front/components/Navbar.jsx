@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { getCart } from "../actions";
 import trendifyLogo from "../assets/img/Logo.png";
+import "../index.css"
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -131,59 +132,38 @@ export const Navbar = () => {
               </button>
 
               <ul className="dropdown-menu">
+              {/* SECCIÓN MUJER */}
+              <li className="dropdown-submenu">
+                <Link className="dropdown-item dropdown-toggle fw-semibold" to="/products?category=mujer">
+                  Mujer
+                </Link>
+                <ul className="dropdown-menu submenu">
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=1">Vestidos</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=2">Blusas</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=3">Pantalones</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=11">Faldas</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=12">Zapatos</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=mujer&sub_id=18">Accesorios</Link></li>
+                </ul>
+              </li>
 
-                {/* MUJER */}
-               
+              <li><hr className="dropdown-divider" /></li>
 
-                <li>
-                  <Link className="dropdown-item fw-semibold" to="/products?category=mujer">
-                    Productos mujer
-                  </Link>
-                </li>
-
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=mujer&sub=blusas">
-                    Blusas
-                  </Link>
-                </li>
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=mujer&sub=faldas">
-                    Faldas
-                  </Link>
-                </li>
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=mujer&sub=zapatos">
-                    Zapatos
-                  </Link>
-                </li>
-
-                <li><hr className="dropdown-divider" /></li>
-
-                {/* HOMBRE */}
-
-                <li>
-                  <Link className="dropdown-item fw-semibold" to="/products?category=hombre">
-                    Producto hombre
-                  </Link>
-                </li>
-
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=hombre&sub=camisas">
-                    Camisas
-                  </Link>
-                </li>
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=hombre&sub=pantalones">
-                    Pantalones
-                  </Link>
-                </li>
-                <li className="ps-3">
-                  <Link className="dropdown-item" to="/products?category=hombre&sub=zapatos">
-                    Zapatos
-                  </Link>
-                </li>
-
-              </ul>
+              {/* SECCIÓN HOMBRE */}
+              <li className="dropdown-submenu">
+                <Link className="dropdown-item dropdown-toggle fw-semibold" to="/products?category=hombre">
+                  Hombre
+                </Link>
+                <ul className="dropdown-menu submenu">
+                  <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=13">Camisas</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=14">Poleras</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=15">Pantalones</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=16">Chaquetas</Link></li>
+                   <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=17">Zapatos</Link></li>
+                  <li><Link className="dropdown-item" to="/products?category=hombre&sub_id=19">Accesorios</Link></li>
+                </ul>
+              </li>
+            </ul>
             </li>
 
 
