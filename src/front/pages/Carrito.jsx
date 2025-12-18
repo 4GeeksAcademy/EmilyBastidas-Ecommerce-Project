@@ -47,6 +47,14 @@ export const Carrito = () => {
     return acc + unitPrice * quantity;
   }, 0);
 
+  const formatCLP = (value) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0
+  }).format(value);
+};
+
   return (
     <div className="container my-5">
       <h3 className="mb-4">Carrito de Compras</h3>
@@ -74,7 +82,7 @@ export const Carrito = () => {
                       <p className="text-muted mb-2">
                         Talla: {item.size || "-"} | Color: {item.color || "-"}
                       </p>
-                      <p className="fw-semibold">€{unitPrice.toFixed(2)}</p>
+                      <p className="fw-semibold">{formatCLP(unitPrice)}</p>
                       <div className="d-flex align-items-center gap-3 mt-2">
                         <button
                           type="button"
@@ -102,7 +110,7 @@ export const Carrito = () => {
                       </div>
                     </div>
                     <div className="fw-semibold" style={{ minWidth: "90px" }}>
-                      € {(unitPrice * (quantities[item.id] || item.quantity || 1)).toFixed(2)}
+                      {formatCLP(unitPrice * (quantities[item.id] || item.quantity || 1))}
                     </div>
                   </div>
                 );
@@ -116,16 +124,16 @@ export const Carrito = () => {
             <h5 className="mb-3">Resumen del Pedido</h5>
             <div className="d-flex justify-content-between mb-2">
               <span className="text-muted">Subtotal</span>
-              <span>€{subtotal.toFixed(2)}</span>
+              <span>{formatCLP(subtotal)}</span>
             </div>
             <div className="d-flex justify-content-between mb-3">
               <span className="text-muted">Envío</span>
-              <span>€0.00</span>
+              <span>{formatCLP(0)}</span>
             </div>
             <hr />
             <div className="d-flex justify-content-between mb-3 fw-semibold">
               <span>Total</span>
-              <span>€{subtotal.toFixed(2)}</span>
+              <span>{formatCLP(subtotal)}</span>
             </div>
             <Link to="/checkout">
               <button className="btn btn-dark w-100 mb-2">Ir al Checkout</button>

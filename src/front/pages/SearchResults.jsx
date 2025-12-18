@@ -54,7 +54,7 @@ export const SearchResults = () => {
           <div className="card p-3 shadow-sm border-0">
             <h5 className="mb-3">Filtros</h5>
             <div className="mb-3">
-              <label className="form-label small fw-bold">Precio Mínimo (€)</label>
+              <label className="form-label small fw-bold">Precio Mínimo ($)</label>
               <input 
                 type="number" 
                 className="form-control form-control-sm" 
@@ -63,7 +63,7 @@ export const SearchResults = () => {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label small fw-bold">Precio Máximo (€)</label>
+              <label className="form-label small fw-bold">Precio Máximo ($)</label>
               <input 
                 type="number" 
                 className="form-control form-control-sm" 
